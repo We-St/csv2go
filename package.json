@@ -1,0 +1,27 @@
+{
+  "name": "csv2go",
+  "version": "0.1.0",
+  "description": "A simple, schema-based csv-to-object converter",
+  "main": "csv2go.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "mocha test/test.js"
+  },
+  "keywords": [
+    "csv",
+    "schema",
+    "converter"
+  ],
+  "author": "Stefan Weghofer",
+  "license": "MIT",
+  "dependencies": {
+    "csv": "^0.4.2",
+    "debug": "^2.2.0",
+    "lodash": "^3.9.3"
+  },
+  "devDependencies": {
+    "chai": "^2.3.0"
+  }
+}
