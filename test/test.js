@@ -5,7 +5,7 @@
 
 
 var assert = require('chai').assert;
-var csv2go = require('../csv-to-go');
+var csv2go = require('../csv2go');
 var _ = require('lodash');
 
 
