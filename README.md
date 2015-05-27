@@ -23,76 +23,76 @@ csv2go can parse files or strings to objects by passing a schema to it. A schema
 are mapped to the object properties. The easiest case to call csv2go is to pass a simple schema, which only consists of
 a name and type for each property.
 
-    ```javascript
-    var schema = {
-        name: 'String', // takes column 0 from csv
-        age: 'Integer'  // takes column 1 from csv
-    };
-    var content = 'Max, 25';
+```javascript
+var schema = {
+    name: 'String', // takes column 0 from csv
+    age: 'Integer'  // takes column 1 from csv
+};
+var content = 'Max, 25';
 
-    csv2go.parse( content, schema, null, function(err, result){
-        // result is an array of objects, one for each line of the csv
-        console.log( result[0].name == 'Max' ); // true
-        console.log( result[0].age == 25 ); // true
-    });
-    ```
+csv2go.parse( content, schema, null, function(err, result){
+    // result is an array of objects, one for each line of the csv
+    console.log( result[0].name == 'Max' ); // true
+    console.log( result[0].age == 25 ); // true
+});
+``
     
 ### Customizing CSV parser
 
 csv2go uses the powerful **csv** npm module. You change parser options by passing it as parameter to the csv2go.parse()
 and csv2go.parseFile() call:
 
-    ```javascript
-    // these are the default options used, you can pass in an object overwriting all or any one of them
-    var defaultOptions = {
-        delimiter: ',',
-        quote: '"',
-        escape: '"',
-        skip: 0 // number of rows at the beginning that should be ignored (e.g. for header rows)
-    };
-    csv2go.parse( content, schema, defaultOptions, function(err, result) { //... } );
-    ```
+```javascript
+// these are the default options used, you can pass in an object overwriting all or any one of them
+var defaultOptions = {
+    delimiter: ',',
+    quote: '"',
+    escape: '"',
+    skip: 0 // number of rows at the beginning that should be ignored (e.g. for header rows)
+};
+csv2go.parse( content, schema, defaultOptions, function(err, result) { //... } );
+```
     
 ### Aggregating CSV columns
 
 csv2go can also be used to aggregate several csv columns to one object value. For this, we can pass an object as type:
 
-    ```javascript
-    var schema = {
-        name: 'String', // takes column 0 from csv
-        salary: { // takes column 1-4 from csv
-            type: 'Integer',
-            range: 4,
-            aggregate: 'sum'
-        }
-    };
-    var content = 'Max,2,4,1,8';
-          
-    csv2go.parse( content, schema, null, function(err, result){
-        // result is an array of objects, one for each line of the csv
-        console.log( result[0].name == 'Max' ); // true
-        console.log( result[0].salary == 15 ); // true
-    });
-    ```
+```javascript
+var schema = {
+    name: 'String', // takes column 0 from csv
+    salary: { // takes column 1-4 from csv
+        type: 'Integer',
+        range: 4,
+        aggregate: 'sum'
+    }
+};
+var content = 'Max,2,4,1,8';
+      
+csv2go.parse( content, schema, null, function(err, result){
+    // result is an array of objects, one for each line of the csv
+    console.log( result[0].name == 'Max' ); // true
+    console.log( result[0].salary == 15 ); // true
+});
+```
     
 Built-in aggregation functions are __sum__, __avg__, __min__ and __max__ for integers and floats and __concat__ for strings.
    
 ### Creating nested objects
-    ```javascript
-    var schema = {
-        'person.name': 'String', // takes column 0 from csv
-        'person.age': 'Integer'  // takes column 1 from csv
-        total: 'Integer'  // takes column 2 from csv
-    };
-    var content = 'Max, 25, 123';
+```javascript
+var schema = {
+    'person.name': 'String', // takes column 0 from csv
+    'person.age': 'Integer'  // takes column 1 from csv
+    total: 'Integer'  // takes column 2 from csv
+};
+var content = 'Max, 25, 123';
 
-    csv2go.parse( content, schema, null, function(err, result){
-        // result is an array of objects, one for each line of the csv
-        console.log( result[0].person.name == 'Max' ); // true
-        console.log( result[0].person.age == 25 ); // true
-        console.log( result[0].total == 123 ); // true
-    });
-    ```
+csv2go.parse( content, schema, null, function(err, result){
+    // result is an array of objects, one for each line of the csv
+    console.log( result[0].person.name == 'Max' ); // true
+    console.log( result[0].person.age == 25 ); // true
+    console.log( result[0].total == 123 ); // true
+});
+```
         
 
 ## Advanced Usage
@@ -149,8 +149,7 @@ Parsing a column can be customized in three steps:
 * apply() can be used to change the resulting value
 A user can overwrite any one or all of these function for a given type.
 
-``javascript
-var schema = {
+```javascriptvar schema = {
     value: {
         type: 'Integer',
         prepare: function( item ){
@@ -176,28 +175,28 @@ csv2go.parse( content, schema, null, function(err, result){
 If you have to heavily customize an existing type or need a customization on various places, you can introduce a 
 new type instead.
 
-    ```javascript
-    var moneyType = {
-        type: 'Money',
-        apply: function( item ){
-            return parseFloat(item.toFixed(2)); // as usual for money, round to two places
-        }
-    };
-    csv2go.register( moneyType, 'Float' ); // register money to derive from 'Float'. 'Money' can be used anywhere in the app now
-    
-    var schema = {
-        x: 'Money',
-        y: 'Integer',
-        z: 'Money'
-    };
-    content = '123.4478,333,345.6745';
-    
-    csv2go.parse( content, schema, null, function(err, result){
-        console.log( result[0].x == 123.45 ); // all properties of type 'Money' have only 2 decimal places now
-        console.log( result[0].y == 333 );
-        console.log( result[0].z == 345.67 );
-    });
-    ```
+```javascript
+var moneyType = {
+    type: 'Money',
+    apply: function( item ){
+        return parseFloat(item.toFixed(2)); // as usual for money, round to two places
+    }
+};
+csv2go.register( moneyType, 'Float' ); // register money to derive from 'Float'. 'Money' can be used anywhere in the app now
+
+var schema = {
+    x: 'Money',
+    y: 'Integer',
+    z: 'Money'
+};
+content = '123.4478,333,345.6745';
+
+csv2go.parse( content, schema, null, function(err, result){
+    console.log( result[0].x == 123.45 ); // all properties of type 'Money' have only 2 decimal places now
+    console.log( result[0].y == 333 );
+    console.log( result[0].z == 345.67 );
+});
+```
     
     
 ## Tests
