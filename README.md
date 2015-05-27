@@ -35,7 +35,7 @@ csv2go.parse( content, schema, null, function(err, result){
     console.log( result[0].name == 'Max' ); // true
     console.log( result[0].age == 25 ); // true
 });
-``
+```
     
 ### Customizing CSV parser
 
@@ -149,7 +149,8 @@ Parsing a column can be customized in three steps:
 * apply() can be used to change the resulting value
 A user can overwrite any one or all of these function for a given type.
 
-```javascriptvar schema = {
+```javascript
+var schema = {
     value: {
         type: 'Integer',
         prepare: function( item ){
