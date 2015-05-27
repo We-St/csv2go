@@ -42,7 +42,7 @@ parse( content, schema, options, cb );
 parseFile( path, schema, options, cb );
 ```
 
-A schema describes the way the columns in the csv are mapped to the object properties. The easiest case to call csv2go 
+A schema describes the way the columns in the csv are mapped to the object properties. The easiest case to call _csv2go_ 
 is to pass a simple schema, which only consists of a name and type for each property.
 
 ```javascript
@@ -61,23 +61,22 @@ csv2go.parse( content, schema, null, function(err, result){
     
 ### Customizing CSV parser
 
-csv2go uses the powerful **csv** npm module. You change parser options by passing it as parameter to the csv2go.parse()
-and csv2go.parseFile() call:
+_csv2go_ uses the powerful **csv npm module**. You change parser options by passing it as parameter to the _csv2go.parse()_
+and _csv2go.parseFile()_ call:
 
 ```javascript
-// these are the default options used, you can pass in an object overwriting all or any one of them
 var defaultOptions = {
     delimiter: ',',
     quote: '"',
     escape: '"',
-    skip: 0 // number of rows at the beginning that should be ignored (e.g. for header rows)
+    skip: 0 // number of rows skipped at the beginning (e.g. for header rows)
 };
 csv2go.parse( content, schema, defaultOptions, function(err, result) { //... } );
 ```
     
 ### Aggregating CSV columns
 
-csv2go can also be used to aggregate several csv columns to one object value. For this, we can pass an object as type:
+_csv2go_ can also be used to aggregate several csv columns to one object value. For this, we can pass an object as type:
 
 ```javascript
 var schema = {
@@ -118,7 +117,7 @@ csv2go.parse( content, schema, null, function(err, result){
         
 
 ## Advanced Usage
-We have already seen the use of basic schemas, aggregation and options. However, csv2go provides several other, powerful functions.
+We have already seen the use of basic schemas, aggregation and options. However, _csv2go_ provides several other, powerful functions.
  
 ### Parsing certain columns and ignoring the rest
 
@@ -166,9 +165,9 @@ csv2go.parse( content, schema, null, function(err, result){
 ### prepare(), parse() and apply()
 
 Parsing a column can be customized in three steps:
-* prepare() takes the raw column value. Can be used to change the value before parsing it
-* parse() takes the value from prepare() and parses it
-* apply() can be used to change the resulting value
+* _prepare()_ takes the raw column value. Can be used to change the value before parsing it
+* _parse()_ takes the value from prepare() and parses it
+* _apply()_ can be used to change the resulting value
 
 A user can overwrite any one or all of these function for a given type.
 
@@ -221,9 +220,6 @@ csv2go.parse( content, schema, null, function(err, result){
     console.log( result[0].z == 345.67 );
 });
 ```
-    
-## Future Work
-* Apply to the 
     
 ## Tests
 
