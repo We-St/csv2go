@@ -2,10 +2,10 @@ csv2go
 =========
 
 A small library for parsing CSV files to JavaScript objects. A user can pass in a schema describing the relation between
-the csv file columns and the expected objects and csv2go will create an object conforming to the schema for each line
+the csv columns and the expected objects and _csv2go_ will create an object conforming to the schema for each line
 of the input.
 
-csv2go supports
+_csv2go_ supports
 * mapping csv columns to object properties
 * mapping csv columns to nested object properties
 * aggregating several columns to one object property
@@ -114,7 +114,26 @@ csv2go.parse( content, schema, null, function(err, result){
     console.log( result[0].total == 123 ); // true
 });
 ```
-        
+      
+### Excluding certain rows from the result 
+
+```javascript
+var schema = {
+    text: 'String',
+    num: 'Integer'
+};
+content = 'abc,5\ndef,0\nghi,2';
+var options = {
+    exclude: function( item ){
+        return item.num > 1;
+    }
+};
+
+csv2go.parse( content, schema, options, function(err, result){
+    // result has length 2
+});
+
+
 
 ## Advanced Usage
 We have already seen the use of basic schemas, aggregation and options. However, _csv2go_ provides several other, powerful functions.
@@ -227,7 +246,7 @@ csv2go.parse( content, schema, null, function(err, result){
 
 ## Contributing
 
-In lieu of a formal styleguide, take care to maintain the existing coding style.
+In lieu of a formal style guide, take care to maintain the existing coding style.
 Add unit tests for any new or changed functionality. Lint and test your code.
 
 ## Release History
