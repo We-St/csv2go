@@ -19,9 +19,31 @@ csv2go supports
 
 ## Usage
 
-csv2go can parse files or strings to objects by passing a schema to it. A schema describes the way the columns in the csv
-are mapped to the object properties. The easiest case to call csv2go is to pass a simple schema, which only consists of
-a name and type for each property.
+csv2go can parse files or strings to objects by passing a schema to it. For this, it offers two main entry points:
+
+```javascript
+/**
+ * Parses the content and returns a list of objects conforming to the schema
+ * @param content The content to the be parsed
+ * @param schema The schema describing the resulting objects
+ * @param options The options
+ * @param cb The callback called with the result
+ */
+parse( content, schema, options, cb );
+
+
+/**
+ * Parses the CSV file and returns a list of objects conforming to the schema
+ * @param path The path to the file
+ * @param schema The schema describing the resulting objects
+ * @param options The options
+ * @param cb The callback called with the result
+ */
+parseFile( path, schema, options, cb );
+```
+
+A schema describes the way the columns in the csv are mapped to the object properties. The easiest case to call csv2go 
+is to pass a simple schema, which only consists of a name and type for each property.
 
 ```javascript
 var schema = {
@@ -145,8 +167,9 @@ csv2go.parse( content, schema, null, function(err, result){
 
 Parsing a column can be customized in three steps:
 * prepare() takes the raw column value. Can be used to change the value before parsing it
-* parse() takes the value from prepare() and parsed it
+* parse() takes the value from prepare() and parses it
 * apply() can be used to change the resulting value
+
 A user can overwrite any one or all of these function for a given type.
 
 ```javascript
@@ -199,6 +222,8 @@ csv2go.parse( content, schema, null, function(err, result){
 });
 ```
     
+## Future Work
+* Apply to the 
     
 ## Tests
 
