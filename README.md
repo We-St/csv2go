@@ -132,7 +132,7 @@ var options = {
 csv2go.parse( content, schema, options, function(err, result){
     // result has length 2
 });
-
+```
 
 
 ## Advanced Usage
