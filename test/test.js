@@ -1025,6 +1025,34 @@ describe('csv2go', function(){
         });
 
     });
+
+
+    describe('parseLine()', function() {
+
+        it('should parse a file and return the values as list', function( done ){
+            schema = {
+                name: 'String',
+                sum: {
+                    type: 'Integer',
+                    range: 3,
+                    aggregate: 'sum'
+                }
+            };
+            options = {
+                delimiter: ';'
+            };
+
+            csv2go.parseFile( 'test/test.csv', schema, options, function(err, result){
+                assert.lengthOf( result, 2 );
+                assert.strictEqual( result[0].name, 'test' );
+                assert.strictEqual( result[0].sum, 6 );
+                assert.strictEqual( result[1].name, 'other' );
+                assert.strictEqual( result[1].sum, 10 );
+                done();
+            });
+        });
+
+    });
 });
 
 

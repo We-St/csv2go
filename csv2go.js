@@ -5,6 +5,7 @@
 var csv = require( 'csv' );
 var debug = require( 'debug' )( 'csv-to-go' );
 var _ = require( 'lodash' );
+var fs = require( 'fs' );
 
 
 
