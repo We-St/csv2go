@@ -17,6 +17,8 @@
 		"csv",
 		"schema",
 		"converter",
+		"object",
+		"mapper",
 		"csv-to-object"
 	],
 	"author" : "Stefan Weghofer",
