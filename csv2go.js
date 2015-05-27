@@ -3,8 +3,8 @@
  */
 
 var csv = require( 'csv' );
-var debug = require('debug')('csv-to-go');
-var _ = require('lodash');
+var debug = require( 'debug' )( 'csv-to-go' );
+var _ = require( 'lodash' );
 
 
 
@@ -16,7 +16,7 @@ var defaultOptions = {
     delimiter: ',',
     quote: '"',
     escape: '"',
-    trimAll: false
+    skip: 0
 };
 
 
@@ -153,7 +153,13 @@ function parseCsv( content, options, cb ) {
 function materialize( lines, schema, options ){
     var keys = _.keys( schema );
     var items = [];
+    var skipCount = options.skip;
     _.forEach( lines, function( line ){
+        if( skipCount > 0 ){
+            skipCount--;
+            return;
+        }
+
         var item = {};
         var index = 0;
         _.forEach( keys, function( key ){

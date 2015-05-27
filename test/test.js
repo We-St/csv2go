@@ -149,6 +149,43 @@ describe('csv2go', function(){
         });
 
 
+        /* skip */
+
+        it('should take the skip option to ignore the first X rows', function( done ){
+            schema = {
+                text: 'String',
+                num: 'Integer'
+            };
+            content = 'abc,5\ndef,0\nghi,2';
+            options = {
+                skip: 2
+            };
+
+            csv2go.parse( content, schema, options, function(err, result){
+                assert.lengthOf( result, 1 );
+                assert.strictEqual( result[0].text, 'ghi' );
+                assert.strictEqual( result[0].num, 2 );
+                done();
+            });
+        });
+
+        it('should take the skip option to ignore the first X rows', function( done ){
+            schema = {
+                text: 'String',
+                num: 'Integer'
+            };
+            content = 'abc,5\ndef,0\nghi,2';
+            options = {
+                skip: 5
+            };
+
+            csv2go.parse( content, schema, options, function(err, result){
+                assert.lengthOf( result, 0 );
+                done();
+            });
+        });
+
+
         /* delimiter */
 
         it('should use delimiter to split input', function( done ){
