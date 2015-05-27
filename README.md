@@ -100,77 +100,77 @@ We have already seen the use of basic schemas, aggregation and options. However,
  
 ### Parsing certain columns and ignoring the rest
 
-    ```javascript
-    var schema = {
-        name: {
-            type: 'String',
-            column: 1,
-        },
-        age: {
-            type: 'Integer',
-            column: 5,
-        }
-    };
-    var content = 'i,Max,i,i,i,25,i';
+```javascript
+var schema = {
+    name: {
+        type: 'String',
+        column: 1,
+    },
+    age: {
+        type: 'Integer',
+        column: 5,
+    }
+};
+var content = 'i,Max,i,i,i,25,i';
 
-    csv2go.parse( content, schema, null, function(err, result){
-        // result is an array of objects, one for each line of the csv
-        console.log( result[0].name == 'Max' ); // true
-        console.log( result[0].age == 25 ); // true
-    });
-    ```
+csv2go.parse( content, schema, null, function(err, result){
+    // result is an array of objects, one for each line of the csv
+    console.log( result[0].name == 'Max' ); // true
+    console.log( result[0].age == 25 ); // true
+});
+```
     
 ### Customizing value conversion
 
-    ```javascript
-    var schema = {
-        name: 'String',
-        value: {
-            type: 'Float',
-            parse: function( item ){
-                return parseFloat( item.substring(0,5) ); // parse the substring, e.g. '123.4' instead of '123.4_test'
-            }
+```javascript
+var schema = {
+    name: 'String',
+    value: {
+        type: 'Float',
+        parse: function( item ){
+            return parseFloat( item.substring(0,5) ); // parse the substring, e.g. '123.4' instead of '123.4_test'
         }
-    };
-    content = 'Max,123.4_test';
+    }
+};
+content = 'Max,123.4_test';
 
-    csv2go.parse( content, schema, null, function(err, result){
-        // result is an array of objects, one for each line of the csv
-        console.log( result[0].name == 'Max' ); // true
-        console.log( result[0].age == 123.4 ); // true
-    });
-    ```
+csv2go.parse( content, schema, null, function(err, result){
+    // result is an array of objects, one for each line of the csv
+    console.log( result[0].name == 'Max' ); // true
+    console.log( result[0].age == 123.4 ); // true
+});
+```
     
 ### prepare(), parse() and apply()
 
 Parsing a column can be customized in three steps:
-* prepare() // takes the raw column value. Can be used to change the value before parsing it
-* parse() // take the value from prepare() and parsed it
-* apply() // can be used to change the resulting value
+* prepare() takes the raw column value. Can be used to change the value before parsing it
+* parse() takes the value from prepare() and parsed it
+* apply() can be used to change the resulting value
 A user can overwrite any one or all of these function for a given type.
 
-    ```javascript
-    var schema = {
-      value: {
-            type: 'Integer',
-            prepare: function( item ){
-                return item + '0'; // append '0' to each input (which is still a string here)
-            },
-            parse: function( item, index ){
-                return parseInt( item ) * 2;
-            },
-            apply: function( item ){
-                return parseInt( item ) - 1;
-            }
-        }        };
-    var content = '1\n3\n10';
+``javascript
+var schema = {
+    value: {
+        type: 'Integer',
+        prepare: function( item ){
+            return item + '0'; // append '0' to each input (which is still a string here)
+        },
+        parse: function( item, index ){
+            return parseInt( item ) * 2;
+        },
+        apply: function( item ){
+            return parseInt( item ) - 1;
+        }
+    }        };
+var content = '1\n3\n10';
 
-    csv2go.parse( content, schema, null, function(err, result){
-        console.log( result[0].value == 19 ); // int('1' + '0') * 2 - 1
-        console.log( result[1].value == 59 ); // int('3' + '0') * 2 - 1
-        console.log( result[2].value == 199 ); // int('10' + '0') * 2 - 1
-    });
-    ```
+csv2go.parse( content, schema, null, function(err, result){
+    console.log( result[0].value == 19 ); // int('1' + '0') * 2 - 1
+    console.log( result[1].value == 59 ); // int('3' + '0') * 2 - 1
+    console.log( result[2].value == 199 ); // int('10' + '0') * 2 - 1
+});
+```
        
 ### Creating new types
 If you have to heavily customize an existing type or need a customization on various places, you can introduce a 
