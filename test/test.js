@@ -116,7 +116,7 @@ describe('csv2go', function(){
             content = 'abc,5\ndef,0\nghi,2';
             options = {
                 exclude: function( item ){
-                    return item.num > 1;
+                    return item.num < 1;
                 }
             };
 
@@ -138,7 +138,7 @@ describe('csv2go', function(){
             content = 'abc,5\ndef,0\nghi,2';
             options = {
                 exclude: function( item ){
-                    return item.num > 10;
+                    return item.num < 10;
                 }
             };
 

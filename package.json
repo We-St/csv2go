@@ -1,6 +1,6 @@
 {
 	"name" : "csv2go",
-	"version" : "0.1.1",
+	"version" : "0.1.2",
 	"description" : "A simple, schema-based csv-to-object converter",
 	"main" : "csv2go.js",
 	"repository": {

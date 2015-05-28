@@ -125,12 +125,13 @@ var schema = {
 content = 'abc,5\ndef,0\nghi,2';
 var options = {
     exclude: function( item ){
-        return item.num > 1;
+        return item.num < 1;
     }
 };
 
 csv2go.parse( content, schema, options, function(err, result){
     // result has length 2
+	// item 'def,0' was filtered out
 });
 ```
 

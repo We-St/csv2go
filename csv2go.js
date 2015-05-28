@@ -235,7 +235,9 @@ function excludeItems( items, options ){
     if( ! _.isFunction( options.exclude ) ){
         throw 'Invalid option: exclude is not a function';
     }
-    return _.filter( items, options.exclude );
+    return _.filter( items, function( item ) {
+		return ! options.exclude( item );
+	});
 }
 
 
