@@ -160,6 +160,9 @@ function materialize( lines, schema, options ){
             skipCount--;
             return;
         }
+        if( ignore( line, options ) ){
+            return;
+        }
 
         var item = {};
         var index = 0;
@@ -179,6 +182,23 @@ function materialize( lines, schema, options ){
         items.push( item );
     });
     return excludeItems( items, options );
+}
+
+
+/**
+ * Checks whether a line should be ignored from parsing. A user can specify an ignore-function(). If this
+ * function returns true, the line will be skipped.
+ * @param segments The segments of the line
+ * @param options The options
+ */
+function ignore( segments, options ){
+    if( ! options.ignore ){
+        return false; // no line will be ignored by default
+    }
+    if( ! _.isFunction( options.ignore ) ){
+        throw 'Invalid option: ignore is not a function';
+    }
+    return options.ignore( segments );
 }
 
 /**

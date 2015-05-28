@@ -115,7 +115,27 @@ csv2go.parse( content, schema, null, function(err, result){
 });
 ```
       
-### Excluding certain rows from the result 
+### Ignoring certain rows (before parsing them)
+```javascript
+var schema = {
+    text: 'String',
+    num: 'Integer'
+};
+content = 'abc,5\ndef,0\nghi,2';
+var options = {
+    ignore: function( segments ){
+        // can also use segments.length to filter too short rows
+        return segments[1] == "0";
+    }
+};
+
+csv2go.parse( content, schema, options, function(err, result){
+    // result has length 2
+	// the row 'def,0' was ignored
+});
+```
+
+### Excluding certain objects (after parsing)
 
 ```javascript
 var schema = {

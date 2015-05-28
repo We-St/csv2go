@@ -87,10 +87,10 @@ describe('csv2go', function(){
         });
 
 
-        /*********************************
+        /******************************************
          * General option tests
-         * (exclude, delimiter, etc.)
-         *********************************/
+         * (exclude, ignore,  delimiter, etc.)
+         ******************************************/
 
         it('should take default values for options', function( done ){
             schema = {
@@ -139,6 +139,75 @@ describe('csv2go', function(){
             options = {
                 exclude: function( item ){
                     return item.num < 10;
+                }
+            };
+
+            csv2go.parse( content, schema, options, function(err, result){
+                assert.lengthOf( result, 0 );
+                done();
+            });
+        });
+
+
+        /* ignore */
+
+        it('should use ignore to filter lines before parsing', function( done ){
+            schema = {
+                text: 'String',
+                num: 'Integer'
+            };
+            content = 'abc,5\ndef,0\nghi,2';
+            options = {
+                ignore: function( segments ){
+                    return segments[1] == '0';
+                }
+            };
+
+            csv2go.parse( content, schema, options, function(err, result){
+                assert.lengthOf( result, 2 );
+                assert.strictEqual( result[0].text, 'abc' );
+                assert.strictEqual( result[0].num, 5 );
+                assert.strictEqual( result[1].text, 'ghi' );
+                assert.strictEqual( result[1].num, 2 );
+                done();
+            });
+        });
+
+        it('should use ignore to filter out too short lines', function( done ){
+            schema = {
+                text: 'String',
+                num: 'Integer',
+                num2: 'Integer'
+            };
+            content = 'abc,5,1\ndef,0,99\nghi,2';
+            options = {
+                ignore: function( segments ){
+                    return segments.length <= 2;
+                }
+            };
+
+            csv2go.parse( content, schema, options, function(err, result){
+                assert.lengthOf( result, 2 );
+                assert.strictEqual( result[0].text, 'abc' );
+                assert.strictEqual( result[0].num, 5 );
+                assert.strictEqual( result[0].num2, 1 );
+                assert.strictEqual( result[1].text, 'def' );
+                assert.strictEqual( result[1].num, 0 );
+                assert.strictEqual( result[1].num2, 99 );
+                done();
+            });
+        });
+
+        it('should be able to handle the case that all files are ignored', function( done ){
+            schema = {
+                text: 'String',
+                num: 'Integer',
+                num2: 'Integer'
+            };
+            content = 'abc,5,1\ndef,0,99\nghi,2';
+            options = {
+                ignore: function( segments ){
+                    return segments.length <= 20;
                 }
             };
 
